@@ -8,4 +8,5 @@ const New = new mongoose.Schema({
   // Other fields...
 });
 
+
 module.exports = mongoose.model('New', New, 'new');
