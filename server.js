@@ -7,19 +7,24 @@ const projectRoutes = require('./src/routes/projectRoutes');
 
 
 const db = require('./src/config/db');
+// var cors = require('cors');
 
 // Connect to db
 db.connect();
 const app = express();
 const PORT = 5555;
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+// app.use(cors());
+
+const addCustomHeader = (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow the specific HTTP methods needed
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Allow the specific headers needed
   next();
-});
+};
+
+// Apply the middleware to all requests
+app.use(addCustomHeader);
 // Middleware
 app.use(bodyParser.json());
 
