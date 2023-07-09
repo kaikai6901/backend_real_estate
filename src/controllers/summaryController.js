@@ -122,6 +122,55 @@ const summaryController = {
       }  
   },
 
+  getListPrice: async(req, res) => {
+    try {
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+      const prices = await New.find({ published_at: { $gt: oneMonthAgo } }, {price_per_m2: 1})
+
+      console.log(prices.length)
+      prices.sort((a, b) => b.price_per_m2 - a.price_per_m2);
+      console.log(prices[prices.length - 1 ])
+
+      const priceBound = Math.ceil(prices.length * 0.05);
+
+      prices.splice(0, priceBound);
+      console.log(priceBound)
+      const normalizedPrices = prices.map(doc => doc.price_per_m2/1000000);
+
+      normalizedPrices.sort((a, b) => a - b)
+      // normalizedPrices = normalizedPrices.map(value => value / 1000000)
+
+      const minValue = Math.floor(normalizedPrices[0]);
+      const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1])
+      const binSize = 1
+      // const binSize = (maxValue - minValue) / 50;
+      const numbins = maxValue - minValue
+
+      const bins = Array.from({ length: numbins }, () => ({ range: [], count: 0 }));
+      console.log(bins)
+      normalizedPrices.forEach((price) => {
+        var binIndex = Math.floor((price - minValue) / binSize);
+
+        // if (binIndex == 50) {
+        //   binIndex -= 1;
+        // }
+        bins[binIndex].range = [
+          minValue + binIndex * binSize,
+          minValue + (binIndex + 1) * binSize,
+        ];
+        bins[binIndex].count++;
+      });
+
+      res.json(bins)
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({'error': 'Internal server error'})
+    }
+  },
+
   getNumberNewsByDistrict: async(req, res) => {
     try {
       const oneMonthAgo = new Date()
@@ -196,7 +245,7 @@ const summaryController = {
     try {
       const results = await New.find(
         {}, 
-        { _id: 0, title: 1, total_price: 1, price_per_m2: 1, square: 1, news_url: 1, address: 1, news_id: 1}
+        { _id: 0, title: 1, total_price: 1, price_per_m2: 1, square: 1, news_url: 1, address: 1, news_id:1}
       ).sort({published_at: -1})
       .limit(10)
       
@@ -205,8 +254,6 @@ const summaryController = {
       res.status(500).json({error: 'An error occurred'})
     }
   }
-
-
 };
 
   
