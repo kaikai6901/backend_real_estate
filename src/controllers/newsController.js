@@ -101,7 +101,7 @@ const newsController = {
       if(is_sort) pipelines.push(sort_stage)
       
       pipelines.push({
-        $limit: 1
+        $limit: 20
       })
 
       try {
