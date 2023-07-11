@@ -5,7 +5,8 @@ const baseProjectSchema = new mongoose.Schema({
   project_id: { type: String, require: true},
   avg_price: { type: Number, require: false},
   avg_square: {type: Number, require: false},
-  n_news: {type: Number, require: false}
+  n_news: {type: Number, require: false},
+  loc: {type: Object}
 });
 
 const BaseProject = mongoose.model('BaseProject', baseProjectSchema, 'base_project');
