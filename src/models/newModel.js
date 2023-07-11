@@ -9,7 +9,9 @@ const New = new mongoose.Schema({
   news_url: {type:String },
   total_price: {type: Number },
   base_project : {
-    name: String
+    name: String,
+    source: String,
+    url: String
   },
   square: Number,
   loc: {

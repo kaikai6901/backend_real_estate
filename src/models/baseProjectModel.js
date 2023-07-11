@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const baseProjectSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  project_id: { type: String, require: true},
+  project_id: { type: Number, require: true},
   avg_price: { type: Number, require: false},
   avg_square: {type: Number, require: false},
   n_news: {type: Number, require: false},
