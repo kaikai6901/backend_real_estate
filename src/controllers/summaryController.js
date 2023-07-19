@@ -143,7 +143,7 @@ const summaryController = {
       // normalizedPrices = normalizedPrices.map(value => value / 1000000)
 
       const minValue = Math.floor(normalizedPrices[0]);
-      const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1])
+      const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1]) + 1
       const binSize = 1
       // const binSize = (maxValue - minValue) / 50;
       const numbins = maxValue - minValue
@@ -152,10 +152,8 @@ const summaryController = {
       console.log(bins)
       normalizedPrices.forEach((price) => {
         var binIndex = Math.floor((price - minValue) / binSize);
-
-        // if (binIndex == 50) {
-        //   binIndex -= 1;
-        // }
+        // console.log(price)
+        // console.log(bins[binIndex])
         bins[binIndex].range = [
           minValue + binIndex * binSize,
           minValue + (binIndex + 1) * binSize,
@@ -231,9 +229,9 @@ const summaryController = {
     try {
       const results = await BaseProject.find(
         {}, 
-        { _id: 0, name: 1, avg_price: 1, avg_square: 1, n_news: 1, project_id: 1 }
+        { _id: 0, parser_response: 0}
       ).sort({n_news: -1})
-      .limit(10)
+      .limit(20)
       
       res.json(results)
     } catch (error) {
@@ -245,7 +243,6 @@ const summaryController = {
     try {
       const results = await New.find(
         {}, 
-        { _id: 0, title: 1, total_price: 1, price_per_m2: 1, square: 1, news_url: 1, address: 1, news_id:1}
       ).sort({published_at: -1})
       .limit(10)
       

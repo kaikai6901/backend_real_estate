@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const summaryRoutes = require('./src/routes/summaryRoutes');
 const newsRoutes = require('./src/routes/newsRoutes');
 const projectRoutes = require('./src/routes/projectRoutes');
-
+const modalRouters = require('./src/routes/modalRouters')
 
 
 const db = require('./src/config/db');
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use('/summary', summaryRoutes);
 app.use('/news', newsRoutes);
 app.use('/project', projectRoutes);
-
+app.use('/modal', modalRouters)
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

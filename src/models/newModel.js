@@ -11,7 +11,20 @@ const New = new mongoose.Schema({
   base_project : {
     name: String,
     source: String,
-    url: String
+    url: String,
+    project_id: Number
+  },
+  street: {
+    type: Object
+  },
+  commune: {
+    type: String
+  },
+  district: {
+    type: String
+  },
+  district: {
+    type: String
   },
   square: Number,
   loc: {
