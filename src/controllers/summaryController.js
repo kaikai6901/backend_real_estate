@@ -241,10 +241,12 @@ const summaryController = {
 
   getListNews: async (req, res) => {
     try {
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
       const results = await New.find(
-        {}, 
-      ).sort({published_at: -1})
-      .limit(10)
+        {published_at: {$gt: oneMonthAgo}}, 
+      ).sort({score: -1})
+      .limit(20)
       
       res.json(results)
     } catch (error) {
