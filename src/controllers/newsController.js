@@ -77,7 +77,6 @@ const newsController = {
       var is_sort = false
       sort_stage = {
         '$sort': {}
-
       }
 
       if (req.query.distance) {
@@ -100,9 +99,14 @@ const newsController = {
       }
 
       if(is_sort) pipelines.push(sort_stage)
+      else pipelines.push({
+        '$sort': {
+          score: -1
+        }
+      })
       
       pipelines.push({
-        $limit: 20
+        $limit: 30
       })
 
       try {

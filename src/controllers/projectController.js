@@ -1,12 +1,35 @@
+const Feature = require('../models/featureProjectModel')
 const BaseProject = require('../models/baseProjectModel')
 const New = require('../models/newModel')
 const projectController = {
     getAllProjects: async (req, res) => {
       // Logic to fetch and return all project names
       try {
-        
-        const projects = await BaseProject.find({ n_news: { $gt: 10 } }, 'name project_id loc');
-        res.json(projects)
+        const pipeline = [
+          {
+            $group: {
+              _id: null,
+              maxProcessId: { $max: "$process_id" },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              maxProcessId: 1,
+            },
+          },
+        ];
+        const [maxProcessIdResult] = await Feature.aggregate(pipeline);
+        if (!maxProcessIdResult || !maxProcessIdResult.maxProcessId) {
+          console.log("No documents found in the collection.");
+        }
+        console.log(maxProcessIdResult)
+        const maxProcessId = maxProcessIdResult.maxProcessId;
+
+        // Step 2: Retrieve all the documents that have the greatest process_id
+        const query = { process_id: maxProcessId };
+        const documentsWithGreatestProcessId = await Feature.find(query, {_id: 0, name: 1, loc: 1, project_id: 1});
+        res.json(documentsWithGreatestProcessId)
       } catch (error) {
         console.error('Error fetching projects: ', error);
         res.status(500).json({ error: 'An error occurred' });
