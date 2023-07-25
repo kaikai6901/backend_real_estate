@@ -43,10 +43,10 @@ const projectController = {
         oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
         const project_id = parseInt(req.params.project_id);
         console.log(project_id)
-        const project = await BaseProject.findOne({project_id: project_id, published_at: {$gt: oneMonthAgo}});
-        console.log(project)
-        const name = project.name
-        const news = await New.find({'base_project.name': name})
+        // const project = await BaseProject.findOne({project_id: project_id, published_at: {$gt: oneMonthAgo}});
+        // console.log(project)
+        // const name = project.name
+        const news = await New.find({'base_project.project_id': project_id, published_at: {$gt: oneMonthAgo}})
         res.json(news)
       } catch (err) {
         console.error('Error fetching projects: ', err);
