@@ -4,7 +4,7 @@ const Feature = new mongoose.Schema({
     project_id : {type: Number},
     name: {type: String},
     loc: {type: Object},
-    process_id: {type: Object}
+    process_id: {type: Number}
     }
 )
 
