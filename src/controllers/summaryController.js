@@ -146,7 +146,7 @@ const summaryController = {
       const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1]) + 1
       const binSize = 2
       // const binSize = (maxValue - minValue) / 50;
-      const numbins = maxValue - minValue
+      const numbins = (maxValue - minValue) / 2
 
       const bins = Array.from({ length: numbins }, () => ({ range: [], count: 0 }));
       console.log(bins)
