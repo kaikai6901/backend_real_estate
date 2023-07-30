@@ -143,7 +143,7 @@ const summaryController = {
       // normalizedPrices = normalizedPrices.map(value => value / 1000000)
 
       const minValue = Math.floor(normalizedPrices[0]);
-      const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1]) + 1
+      const maxValue = Math.ceil(normalizedPrices[normalizedPrices.length - 1]) + 3
       const binSize = 2
       // const binSize = (maxValue - minValue) / 50;
       const numbins = (maxValue - minValue) / 2
