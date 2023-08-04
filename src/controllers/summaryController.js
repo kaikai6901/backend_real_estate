@@ -38,13 +38,21 @@ const summaryController = {
       try {
         // Get the current month's average price
         const currentMonth = new Date();
+        const oneMonthAgo = new Date();
+        const twoMonthAgo = new Date();
+        const threeMonthAgo = new Date();
+
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
+        twoMonthAgo.setMonth(twoMonthAgo.getMonth() - 2)
+        threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3)
+
         const currentResults = await New.aggregate([
           {
             $match: {
               price_per_m2: { $exists: true },
               published_at: {
-                $gte: new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1),
-                $lt: new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
+                $gte: oneMonthAgo,
+                $lt: currentMonth
               }
             }
           },
@@ -60,14 +68,14 @@ const summaryController = {
         const currentAveragePrice = currentResults[0].average_price_per_m2;
     
         // Get the average price of the previous month
-        const previousMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
+
         const previousResults = await New.aggregate([
           {
             $match: {
               price_per_m2: { $exists: true },
               published_at: {
-                $gte: new Date(previousMonth.getFullYear(), previousMonth.getMonth(), 1),
-                $lt: new Date(previousMonth.getFullYear(), previousMonth.getMonth() + 1, 1)
+                $gte: twoMonthAgo,
+                $lt: oneMonthAgo
               }
             }
           },
@@ -81,14 +89,14 @@ const summaryController = {
         const previousAveragePrice = previousResults[0].average_price_per_m2;
     
         // Get the average price of two months before
-        const twoMonthsBefore = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 2);
+    
         const twoMonthsResults = await New.aggregate([
           {
             $match: {
               price_per_m2: { $exists: true },
               published_at: {
-                $gte: new Date(twoMonthsBefore.getFullYear(), twoMonthsBefore.getMonth(), 1),
-                $lt: new Date(twoMonthsBefore.getFullYear(), twoMonthsBefore.getMonth() + 1, 1)
+                $gte: threeMonthAgo,
+                $lt: twoMonthAgo
               }
             }
           },

@@ -2,8 +2,8 @@ const express = require('express');
 var cors = require('cors')
 const bodyParser = require('body-parser');
 const summaryRoutes = require('./src/routes/summaryRoutes');
-const newsRoutes = require('./src/routes/newsRoutes');
-const projectRoutes = require('./src/routes/projectRoutes');
+const searchRouters = require('./src/routes/searchRoutes')
+const evaluateRouters = require('./src/routes/evaluateRouters');
 const modalRouters = require('./src/routes/modalRouters')
 
 
@@ -42,8 +42,8 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/summary', summaryRoutes);
-app.use('/news', newsRoutes);
-app.use('/project', projectRoutes);
+app.use('/news', searchRouters);
+app.use('/project', evaluateRouters);
 app.use('/modal', modalRouters)
 // Start the server
 app.listen(PORT, () => {

@@ -31,10 +31,10 @@ const newsController = {
 
       const oneMonthAgo = new Date();
       oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
-
+      console.log(oneMonthAgo)
       const dateFilter = {
         $match: {
-          published_at: { $gt: oneMonthAgo }
+          last_time_in_page: { $gt: oneMonthAgo }
         }
       }
       pipelines.push(dateFilter)
@@ -113,6 +113,14 @@ const newsController = {
         console.log(pipelines)
         const results = await New.aggregate(pipelines)
         console.log(results)
+        if (results.length < 10) {
+            const threeMonthAgo = new Date();
+            threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3)
+            pipelines[1].$match.last_time_in_page.$gt = threeMonthAgo
+            console.log(pipelines)
+            const moreResults = await New.aggregate(pipelines)
+            res.json(moreResults)
+        } else 
         res.json(results)
       } catch (error) {
         console.error(error)
@@ -340,9 +348,9 @@ const newsController = {
 
       if(is_sort) pipelines.push(sort_stage)
 
-      pipelines.push({
-        $limit: 20
-      })
+      // pipelines.push({
+      //   $limit: 20
+      // })
 
       try {
         console.log(pipelines)

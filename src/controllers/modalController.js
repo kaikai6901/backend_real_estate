@@ -176,7 +176,6 @@ const modalController = {
             }
           }
           ])
-          
           result.around_property = around_property
           res.json(result)
       } catch (err) {
